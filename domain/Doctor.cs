@@ -1,6 +1,6 @@
 ﻿namespace domain
 {
-    internal class Doctor
+    public class Doctor
     {
         public int Id;
         public string FullName;

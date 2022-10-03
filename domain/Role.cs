@@ -1,7 +1,8 @@
 ﻿namespace domain
 {
-    internal class Role
+    public enum Role
     {
-        public int Id;
+        Patient,
+        Administrator
     }
 }

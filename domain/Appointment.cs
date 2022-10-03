@@ -1,6 +1,6 @@
 ﻿namespace domain
 {
-    internal class Appointment
+    public class Appointment
     {
         public DateTime StartTime;
         public DateTime EndTime;

@@ -1,6 +1,6 @@
 ﻿namespace domain
 {
-    internal class Specialization
+    public class Specialization
     {
         public int Id;
         public string Name;

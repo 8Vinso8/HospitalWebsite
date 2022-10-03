@@ -1,6 +1,6 @@
 ﻿namespace domain
 {
-    internal class Schedule
+    public class Schedule
     {
         public int DoctorId;
         public DateTime StartTime;

@@ -1,6 +1,6 @@
 ﻿namespace domain
 {
-    internal class User
+    public class User
     {
         public int Id;
         public string PhoneNumber;
