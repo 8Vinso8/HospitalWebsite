@@ -12,14 +12,14 @@ namespace domain.Service
       _db = db;
     }
 
-    public Result<User> GetUsernByUsername(string username)
+    public Result<User> GetUserByUsername(string username)
     {
       if (string.IsNullOrEmpty(username))
         return Result.Fail<User>("Invalid username");
 
       return _db.IsUserExists(username) ?
         Result.Ok(_db.GetUserByUsername(username))
-        : Result.Fail<User>("User not found");
+        : Result.Fail<User>("Cant find user");
     }
 
 
