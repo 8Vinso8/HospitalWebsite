@@ -56,7 +56,7 @@ namespace UnitTests
       var res = _userService.Register(new User());
 
       Assert.True(res.IsFailure);
-      Assert.Equal("Invalid username", res.Error);
+      Assert.Contains("Invalid username", res.Error);
     }
 
     [Fact] public void Register_AlreadyExists_ShouldFail()
