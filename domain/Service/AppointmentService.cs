@@ -26,9 +26,7 @@ public class AppointmentService
       return Result.Fail<Appointment>("Appointment out of schedule");
 
     var appointments = _db.GetAppointments(appointment.DoctorId).ToList();
-    appointments.Sort((a, b) => a.StartTime < b.StartTime ? -1 : 1);
-    var index = appointments.FindLastIndex(a => a.EndTime <= appointment.StartTime);
-    if (appointments.Count > index + 1 && appointments[index + 1].StartTime < appointment.EndTime)
+    if (appointments.Any(a => appointment.StartTime < a.EndTime && a.StartTime < appointment.EndTime))
       return Result.Fail<Appointment>("Time is occupied");
 
     return _db.CreateAppointment(appointment)
