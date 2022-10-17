@@ -17,7 +17,7 @@ public class DoctorService
     var check = doctor.IsValid();
     if (check.IsFailure)
       return Result.Fail<Doctor>("Invalid doctor: " + check.Error);
-    return _db.AddDoctor(doctor) ? Result.Ok<Doctor>(doctor) : Result.Fail<Doctor>("Cant add doctor");
+    return _db.AddDoctor(doctor) ? Result.Ok(doctor) : Result.Fail<Doctor>("Cant add doctor");
   }
 
   public Result<Doctor> RemoveDoctor(int id, IAppointmentRepository repository)
@@ -40,15 +40,15 @@ public class DoctorService
     if (id < 0)
       return Result.Fail<Doctor>("Invalid id");
     var doctor = _db.GetDoctor(id);
-    return doctor == null ? Result.Fail<Doctor>("Cant get doctor") : Result.Ok<Doctor>(doctor);
+    return doctor == null ? Result.Fail<Doctor>("Cant get doctor") : Result.Ok(doctor);
   }
 
-  public Result<Doctor> GetDoctor(Specialization specialization)
+  public Result<IEnumerable<Doctor>> GetDoctor(Specialization specialization)
   {
     var check = specialization.IsValid();
     if (check.IsFailure)
-      return Result.Fail<Doctor>("Invalid specialization: " + check.Error);
-    var doctor = _db.GetDoctor(specialization);
-    return doctor == null ? Result.Fail<Doctor>("Cant find doctor") : Result.Ok<Doctor>(doctor);
+      return Result.Fail<IEnumerable<Doctor>>("Invalid specialization: " + check.Error);
+    var doctors = _db.GetDoctor(specialization);
+    return Result.Ok(doctors);
   }
 }

@@ -8,5 +8,5 @@ public interface IDoctorRepository : IRepository<Doctor>
   bool RemoveDoctor(int id);
   IEnumerable<Doctor> GetAllDoctors();
   Doctor GetDoctor(int id);
-  Doctor GetDoctor(Specialization specialization);
+  IEnumerable<Doctor> GetDoctor(Specialization specialization);
 }

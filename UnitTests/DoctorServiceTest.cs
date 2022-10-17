@@ -145,20 +145,14 @@ public class DoctorServiceTests
     Assert.True(result.IsFailure);
     Assert.Contains("Invalid specialization: ", result.Error);
   }
-
-  [Fact] public void FindSpec_NotFound_F()
+  
+  [Fact] public void GetDoctor_Specialization_Success()
   {
-    _doctorRepositoryMock.Setup(repository => repository.GetDoctor(It.IsAny<Specialization>())).Returns(() => null);
-
-    var result = _doctorService.GetDoctor(new Specialization(0, "a"));
-
-    Assert.True(result.IsFailure);
-    Assert.Equal("Cant find doctor", result.Error);
-  }
-
-  [Fact] public void FindSpec_Valid_P()
-  {
-    _doctorRepositoryMock.Setup(repository => repository.GetDoctor(It.IsAny<Specialization>())).Returns(() => new Doctor(0, "0", new Specialization(0, "0")));
+    List<Doctor> doctors = new()
+    {
+      new Doctor(0, "0", new Specialization(0, "0"))
+    };
+    _doctorRepositoryMock.Setup(repository => repository.GetDoctor(It.IsAny<Specialization>())).Returns(() => doctors);
 
     var result = _doctorService.GetDoctor(new Specialization(0, "0"));
 
