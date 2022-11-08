@@ -69,7 +69,7 @@ public class AppointmentServiceTests
     {
         List<Appointment> appointments = new();
         _appointmentRepositoryMock.Setup(x => x.GetAppointments(It.IsAny<int>())).Returns(() => appointments);
-        _appointmentRepositoryMock.Setup(x => x.CreateAppointment(It.IsAny<Appointment>())).Returns(() => false);
+        _appointmentRepositoryMock.Setup(x => x.Create(It.IsAny<Appointment>())).Returns(() => false);
 
         var appointment = new Appointment(0, 0, DateTime.MinValue, DateTime.MaxValue);
         var schedule = new Schedule(0, DateTime.MinValue, DateTime.MaxValue);
@@ -84,7 +84,7 @@ public class AppointmentServiceTests
     {
         List<Appointment> appointments = new();
         _appointmentRepositoryMock.Setup(x => x.GetAppointments(It.IsAny<int>())).Returns(() => appointments);
-        _appointmentRepositoryMock.Setup(x => x.CreateAppointment(It.IsAny<Appointment>())).Returns(() => true);
+        _appointmentRepositoryMock.Setup(x => x.Create(It.IsAny<Appointment>())).Returns(() => true);
 
         var appointment = new Appointment(0, 0, DateTime.MinValue, DateTime.MaxValue);
         var schedule = new Schedule(0, DateTime.MinValue, DateTime.MaxValue);

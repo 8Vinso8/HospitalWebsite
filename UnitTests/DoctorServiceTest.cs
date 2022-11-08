@@ -25,7 +25,7 @@ public class DoctorServiceTests
 
   [Fact] public void AddDoctor_Error_When_Adding()
   {
-    _doctorRepositoryMock.Setup(repository => repository.AddDoctor(It.IsAny<Doctor>())).Returns(() => false);
+    _doctorRepositoryMock.Setup(repository => repository.Create(It.IsAny<Doctor>())).Returns(() => false);
     var doctor = new Doctor(0, "0", new Specialization(0, "0"));
     var check = _doctorService.AddDoctor(doctor);
 
@@ -35,7 +35,7 @@ public class DoctorServiceTests
 
   [Fact] public void Add_Valid_Doctor_Success()
   {
-    _doctorRepositoryMock.Setup(repository => repository.AddDoctor(It.IsAny<Doctor>())).Returns(() => true);
+    _doctorRepositoryMock.Setup(repository => repository.Create(It.IsAny<Doctor>())).Returns(() => true);
     var doctor = new Doctor(0, "0", new Specialization(0, "0"));
     var check = _doctorService.AddDoctor(doctor);
 
@@ -75,7 +75,7 @@ public class DoctorServiceTests
     List<Appointment> apps = new();
     _appointmentRepositoryMock.Setup(x => x.GetAppointments(It.IsAny<int>())).Returns(apps);
     _doctorRepositoryMock.Setup(repository => repository.GetDoctor(It.IsAny<int>())).Returns(() => new Doctor(0, "a", new Specialization(0, "a")));
-    _doctorRepositoryMock.Setup(repository => repository.RemoveDoctor(It.IsAny<int>())).Returns(() => false);
+    _doctorRepositoryMock.Setup(repository => repository.Delete(It.IsAny<int>())).Returns(() => false);
 
     var result = _doctorService.RemoveDoctor(0, _appointmentRepositoryMock.Object);
 
@@ -89,7 +89,7 @@ public class DoctorServiceTests
     List<Appointment> apps = new();
     _appointmentRepositoryMock.Setup(x => x.GetAppointments(It.IsAny<int>())).Returns(apps);
     _doctorRepositoryMock.Setup(repository => repository.GetDoctor(It.IsAny<int>())).Returns(() => new Doctor(0, "0", new Specialization(0, "0")));
-    _doctorRepositoryMock.Setup(repository => repository.RemoveDoctor(It.IsAny<int>())).Returns(() => true);
+    _doctorRepositoryMock.Setup(repository => repository.Delete(It.IsAny<int>())).Returns(() => true);
 
     var result = _doctorService.RemoveDoctor(0, _appointmentRepositoryMock.Object);
 

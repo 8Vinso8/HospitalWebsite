@@ -29,7 +29,7 @@ public class AppointmentService
         if (appointments.Any(a => appointment.StartTime < a.EndTime && a.StartTime < appointment.EndTime))
             return Result.Fail<Appointment>("Time is occupied");
 
-        return _db.CreateAppointment(appointment)
+        return _db.Create(appointment)
             ? Result.Ok(appointment)
             : Result.Fail<Appointment>("Cant create appointment");
     }

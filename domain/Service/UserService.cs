@@ -42,7 +42,7 @@ public class UserService
     if (_db.IsUserExists(user.Username))
       return Result.Fail<User>("Username is already taken");
 
-    return _db.CreateUser(user)
+    return _db.Create(user)
       ? Result.Ok(user)
       : Result.Fail<User>("Cant create user");
   }

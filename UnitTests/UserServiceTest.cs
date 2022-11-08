@@ -76,7 +76,7 @@ namespace UnitTests
         .IsUserExists(It.IsAny<string>())).Returns(() => false);
 
       _userRepositoryMock.Setup(repository => repository
-        .CreateUser(It.IsAny<User>())).Returns(() => false);
+        .Create(It.IsAny<User>())).Returns(() => false);
 
       var res = _userService.Register(new User(0, "0", "0", Role.Patient, "0", "0"));
 
