@@ -11,7 +11,7 @@ public static class DoctorConverter
     {
       Id = model.Id,
       FullName = model.FullName,
-      Specialization = model.Specialization
+      Specialization = model.Specialization.ToModel()
     };
   }
 
@@ -21,7 +21,7 @@ public static class DoctorConverter
     {
       Id = model.Id,
       FullName = model.FullName,
-      Specialization = model.Specialization
+      Specialization = model.Specialization.ToDomain()
     };
   }
 }

@@ -68,6 +68,6 @@ public class DoctorRepository : IDoctorRepository
 
   public IEnumerable<Doctor> GetDoctors(Specialization specialization)
   {
-    return _context.Doctors.Where(d => d.Specialization == specialization).Select(d => d.ToDomain());
+    return _context.Doctors.Where(d => d.Specialization == specialization.ToModel()).Select(d => d.ToDomain());
   }
 }
