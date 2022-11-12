@@ -8,6 +8,10 @@ public class Doctor
   public string FullName;
   public Specialization Specialization;
 
+  public Doctor()
+  {
+  }
+
   public Doctor(int id, string fullname, Specialization specialization)
   {
     Id = id;

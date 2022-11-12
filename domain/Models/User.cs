@@ -11,7 +11,10 @@ namespace domain.Models
     public string Username;
     public string Password;
 
-    public User() {}
+    public User()
+    {
+    }
+
     public User(int _Id, string _PhoneNumber, string _FullName, Role _Role,
       string _Username, string _Password)
     {

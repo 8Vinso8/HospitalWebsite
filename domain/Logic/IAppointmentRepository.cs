@@ -5,6 +5,6 @@ using Models;
 public interface IAppointmentRepository : IRepository<Appointment>
 {
   IEnumerable<Appointment> GetAppointments(int doctorId);
-  IEnumerable<IEnumerable<DateTime>> GetFreeAppointments(int doctorId);
-  IEnumerable<IEnumerable<DateTime>> GetFreeAppointments(Specialization specialization);
+  IEnumerable<Appointment> GetFreeAppointments(int doctorId);
+  IEnumerable<Appointment> GetFreeAppointments(Specialization specialization);
 }

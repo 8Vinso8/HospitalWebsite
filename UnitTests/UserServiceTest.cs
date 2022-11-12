@@ -24,7 +24,7 @@ namespace UnitTests
     [Fact] public void UserNotFound_ShouldFail()
     {
       _userRepositoryMock.Setup(repository => repository
-        .GetUserByUsername(It.IsAny<string>())).Returns(() => null);
+        .GetItem(It.IsAny<string>())).Returns(() => null);
 
       var res = _userService.GetUserByUsername("0");
 

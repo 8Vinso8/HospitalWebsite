@@ -12,13 +12,13 @@ public class UserService
     _db = db;
   }
 
-  public Result<User> GetUserByUsername(string username)
+  public Result<User?> GetUserByUsername(string username)
   {
     if (string.IsNullOrEmpty(username))
       return Result.Fail<User>("Invalid username");
 
     return _db.IsUserExists(username)
-      ? Result.Ok(_db.GetUserByUsername(username))
+      ? Result.Ok(_db.GetItem(username))
       : Result.Fail<User>("Cant find user");
   }
 

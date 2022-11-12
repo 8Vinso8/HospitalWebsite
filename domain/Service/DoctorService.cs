@@ -33,13 +33,13 @@ public class DoctorService
 
   public Result<IEnumerable<Doctor>> GetAllDoctors()
   {
-    return Result.Ok(_db.GetAllDoctors());
+    return Result.Ok(_db.GetAll());
   }
   public Result<Doctor> GetDoctor(int id)
   {
     if (id < 0)
       return Result.Fail<Doctor>("Invalid id");
-    var doctor = _db.GetDoctor(id);
+    var doctor = _db.GetItem(id);
     return doctor == null ? Result.Fail<Doctor>("Cant get doctor") : Result.Ok(doctor);
   }
 
@@ -48,7 +48,7 @@ public class DoctorService
     var check = specialization.IsValid();
     if (check.IsFailure)
       return Result.Fail<IEnumerable<Doctor>>("Invalid specialization: " + check.Error);
-    var doctors = _db.GetDoctor(specialization);
+    var doctors = _db.GetDoctors(specialization);
     return Result.Ok(doctors);
   }
 }

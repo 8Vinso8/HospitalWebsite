@@ -8,9 +8,15 @@ public class Appointment
   public int PatientId;
   public DateTime StartTime;
   public DateTime EndTime;
+  public int Id;
 
-  public Appointment(int doctorId, int patientId, DateTime startTime, DateTime endTime)
+  public Appointment()
   {
+  }
+
+  public Appointment(int id, int doctorId, int patientId, DateTime startTime, DateTime endTime)
+  {
+    Id = id;
     DoctorId = doctorId;
     PatientId = patientId;
     StartTime = startTime;
@@ -25,6 +31,8 @@ public class Appointment
       return Result.Fail("Invalid patient id");
     if (EndTime <= StartTime)
       return Result.Fail("Invalid time");
+    if (Id < 0)
+      return Result.Fail("Invalid Id");
     return Result.Ok();
   }
 }

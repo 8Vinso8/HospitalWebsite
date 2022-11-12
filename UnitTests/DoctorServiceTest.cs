@@ -14,7 +14,8 @@ public class DoctorServiceTests
     _doctorService = new DoctorService(_doctorRepositoryMock.Object);
   }
 
-  [Fact] public void Add_Invalid_Doctor()
+  [Fact]
+  public void Add_Invalid_Doctor()
   {
     var doctor = new Doctor(-1, "", new Specialization(-1, ""));
     var check = _doctorService.AddDoctor(doctor);
@@ -23,7 +24,8 @@ public class DoctorServiceTests
     Assert.Contains("Invalid doctor: ", check.Error);
   }
 
-  [Fact] public void AddDoctor_Error_When_Adding()
+  [Fact]
+  public void AddDoctor_Error_When_Adding()
   {
     _doctorRepositoryMock.Setup(repository => repository.Create(It.IsAny<Doctor>())).Returns(() => false);
     var doctor = new Doctor(0, "0", new Specialization(0, "0"));
@@ -33,7 +35,8 @@ public class DoctorServiceTests
     Assert.Equal("Cant add doctor", check.Error);
   }
 
-  [Fact] public void Add_Valid_Doctor_Success()
+  [Fact]
+  public void Add_Valid_Doctor_Success()
   {
     _doctorRepositoryMock.Setup(repository => repository.Create(It.IsAny<Doctor>())).Returns(() => true);
     var doctor = new Doctor(0, "0", new Specialization(0, "0"));
@@ -42,7 +45,8 @@ public class DoctorServiceTests
     Assert.True(check.Success);
   }
 
-  [Fact] public void Delete_Not_Existing_Doctor_Error()
+  [Fact]
+  public void Delete_Not_Existing_Doctor_Error()
   {
     var _appointmentRepositoryMock = new Mock<IAppointmentRepository>();
     List<Appointment> apps = new();
@@ -54,12 +58,13 @@ public class DoctorServiceTests
     Assert.Equal("Cant get doctor", check.Error);
   }
 
-  [Fact] public void Remove_Doctor_With_Appointments_Returns_Error()
+  [Fact]
+  public void Remove_Doctor_With_Appointments_Returns_Error()
   {
     var _appointmentRepositoryMock = new Mock<IAppointmentRepository>();
     List<Appointment> apps = new()
     {
-      new Appointment(0, 0, DateTime.MinValue, DateTime.MaxValue)
+      new Appointment(0, 0, 0, DateTime.MinValue, DateTime.MaxValue)
     };
     _appointmentRepositoryMock.Setup(x => x.GetAppointments(It.IsAny<int>())).Returns(apps);
 
@@ -69,12 +74,14 @@ public class DoctorServiceTests
     Assert.Equal("Doctor has appointments", result.Error);
   }
 
-  [Fact] public void Error_When_Removing()
+  [Fact]
+  public void Error_When_Removing()
   {
     var _appointmentRepositoryMock = new Mock<IAppointmentRepository>();
     List<Appointment> apps = new();
     _appointmentRepositoryMock.Setup(x => x.GetAppointments(It.IsAny<int>())).Returns(apps);
-    _doctorRepositoryMock.Setup(repository => repository.GetDoctor(It.IsAny<int>())).Returns(() => new Doctor(0, "a", new Specialization(0, "a")));
+    _doctorRepositoryMock.Setup(repository => repository.GetItem(It.IsAny<int>()))
+      .Returns(() => new Doctor(0, "a", new Specialization(0, "a")));
     _doctorRepositoryMock.Setup(repository => repository.Delete(It.IsAny<int>())).Returns(() => false);
 
     var result = _doctorService.RemoveDoctor(0, _appointmentRepositoryMock.Object);
@@ -83,12 +90,14 @@ public class DoctorServiceTests
     Assert.Equal("Cant remove doctor", result.Error);
   }
 
-  [Fact] public void Valid_Removal_Success()
+  [Fact]
+  public void Valid_Removal_Success()
   {
     var _appointmentRepositoryMock = new Mock<IAppointmentRepository>();
     List<Appointment> apps = new();
     _appointmentRepositoryMock.Setup(x => x.GetAppointments(It.IsAny<int>())).Returns(apps);
-    _doctorRepositoryMock.Setup(repository => repository.GetDoctor(It.IsAny<int>())).Returns(() => new Doctor(0, "0", new Specialization(0, "0")));
+    _doctorRepositoryMock.Setup(repository => repository.GetItem(It.IsAny<int>()))
+      .Returns(() => new Doctor(0, "0", new Specialization(0, "0")));
     _doctorRepositoryMock.Setup(repository => repository.Delete(It.IsAny<int>())).Returns(() => true);
 
     var result = _doctorService.RemoveDoctor(0, _appointmentRepositoryMock.Object);
@@ -96,7 +105,8 @@ public class DoctorServiceTests
     Assert.True(result.Success);
   }
 
-  [Fact] public void GetAllDoctors_Success()
+  [Fact]
+  public void GetAllDoctors_Success()
   {
     List<Doctor> doctors = new()
     {
@@ -104,14 +114,15 @@ public class DoctorServiceTests
       new Doctor(1, "00", new Specialization(0, "0"))
     };
     IEnumerable<Doctor> d = doctors;
-    _doctorRepositoryMock.Setup(repository => repository.GetAllDoctors()).Returns(() => d);
+    _doctorRepositoryMock.Setup(repository => repository.GetAll()).Returns(() => d);
 
     var result = _doctorService.GetAllDoctors();
 
     Assert.True(result.Success);
   }
 
-  [Fact] public void GetDoctor_Invalid_Id_Error()
+  [Fact]
+  public void GetDoctor_Invalid_Id_Error()
   {
     var result = _doctorService.GetDoctor(-1);
 
@@ -119,9 +130,10 @@ public class DoctorServiceTests
     Assert.Equal("Invalid id", result.Error);
   }
 
-  [Fact] public void GetDoctor_Not_Found()
+  [Fact]
+  public void GetDoctor_Not_Found()
   {
-    _doctorRepositoryMock.Setup(repository => repository.GetDoctor(It.IsAny<int>())).Returns(() => null);
+    _doctorRepositoryMock.Setup(repository => repository.GetItem(It.IsAny<int>())).Returns(() => null);
 
     var result = _doctorService.GetDoctor(0);
 
@@ -129,34 +141,37 @@ public class DoctorServiceTests
     Assert.Equal("Cant get doctor", result.Error);
   }
 
-  [Fact] public void Get_Doctor_By_Id_Success()
+  [Fact]
+  public void Get_Doctor_By_Id_Success()
   {
-    _doctorRepositoryMock.Setup(repository => repository.GetDoctor(It.IsAny<int>())).Returns(() => new Doctor(0, "0", new Specialization(0, "0")));
+    _doctorRepositoryMock.Setup(repository => repository.GetItem(It.IsAny<int>()))
+      .Returns(() => new Doctor(0, "0", new Specialization(0, "0")));
 
     var result = _doctorService.GetDoctor(0);
 
     Assert.True(result.Success);
   }
 
-  [Fact] public void GetDoctor_Specialization_Invalid_Error()
+  [Fact]
+  public void GetDoctor_Specialization_Invalid_Error()
   {
     var result = _doctorService.GetDoctor(new Specialization(-1, ""));
 
     Assert.True(result.IsFailure);
     Assert.Contains("Invalid specialization: ", result.Error);
   }
-  
-  [Fact] public void GetDoctor_Specialization_Success()
+
+  [Fact]
+  public void GetDoctor_Specialization_Success()
   {
     List<Doctor> doctors = new()
     {
       new Doctor(0, "0", new Specialization(0, "0"))
     };
-    _doctorRepositoryMock.Setup(repository => repository.GetDoctor(It.IsAny<Specialization>())).Returns(() => doctors);
+    _doctorRepositoryMock.Setup(repository => repository.GetDoctors(It.IsAny<Specialization>())).Returns(() => doctors);
 
     var result = _doctorService.GetDoctor(new Specialization(0, "0"));
 
     Assert.True(result.Success);
   }
-
 }
