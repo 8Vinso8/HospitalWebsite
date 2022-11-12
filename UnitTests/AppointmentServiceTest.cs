@@ -106,11 +106,10 @@ public class AppointmentServiceTests
   [Fact]
   public void GetFreeAppointments_Specialization_Valid_Success()
   {
-    List<List<DateTime>> appointments = new()
+    List<Appointment> appointments = new()
     {
-      new List<DateTime>()
     };
-    IEnumerable<IEnumerable<DateTime>> a = appointments;
+    IEnumerable<Appointment> a = appointments;
     _appointmentRepositoryMock.Setup(repository => repository.GetFreeAppointments(It.IsAny<Specialization>()))
       .Returns(() => a);
 
@@ -148,11 +147,10 @@ public class AppointmentServiceTests
   [Fact]
   public void GetFreeAppointments_Id_Valid_Success()
   {
-    List<List<DateTime>> appointments = new()
+    List<Appointment> appointments = new()
     {
-      new List<DateTime>()
     };
-    IEnumerable<IEnumerable<DateTime>> a = appointments;
+    IEnumerable<Appointment> a = appointments;
     _appointmentRepositoryMock.Setup(repository => repository.GetFreeAppointments(It.IsAny<int>()))
       .Returns(() => a);
     var check = _appointmentService.GetFreeAppointments(0);

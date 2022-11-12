@@ -57,7 +57,7 @@ public class ScheduleServiceTests
     var result = _scheduleService.CreateSchedule(schedule);
 
     Assert.True(result.IsFailure);
-    Assert.Contains("Invalid doctor", result.Error);
+    Assert.Contains("Invalid id", result.Error);
   }
 
   [Fact]

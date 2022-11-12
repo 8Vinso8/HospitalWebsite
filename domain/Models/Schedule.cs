@@ -18,6 +18,7 @@ public class Schedule
     DoctorId = doctorId;
     StartTime = startTime;
     EndTime = endTime;
+    Id = id;
   }
 
   public Result IsValid()

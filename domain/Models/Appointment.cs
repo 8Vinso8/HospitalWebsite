@@ -32,7 +32,7 @@ public class Appointment
     if (EndTime <= StartTime)
       return Result.Fail("Invalid time");
     if (Id < 0)
-      return Result.Fail("Invalid Id");
+      return Result.Fail("Invalid id");
     return Result.Ok();
   }
 }
