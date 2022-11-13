@@ -21,30 +21,28 @@ public class ScheduleService
     return Result.Ok(_db.GetSchedule(doctor));
   }
 
-  public Result CreateSchedule(Doctor doctor, Schedule schedule)
+  public Result CreateSchedule(Schedule schedule)
   {
-    var result = doctor.IsValid();
-    if (result.IsFailure)
-      return Result.Fail("Invalid doctor: " + result.Error);
+    if (schedule.DoctorId < 0)
+      return Result.Fail("Invalid doctor");
 
     var result1 = schedule.IsValid();
     if (result1.IsFailure)
       return Result.Fail("Invalid schedule: " + result1.Error);
 
-    return _db.CreateSchedule(doctor, schedule) ? Result.Ok() : Result.Fail<Schedule>("Cant create schedule");
+    return _db.Create(schedule) ? Result.Ok() : Result.Fail<Schedule>("Cant create schedule");
   }
 
-  public Result UpdateSchedule(Doctor doctor, Schedule schedule)
+  public Result UpdateSchedule(Schedule schedule)
   {
-    var check = doctor.IsValid();
-    if (check.IsFailure)
-      return Result.Fail("Invalid doctor: " + check.Error);
+    if (schedule.DoctorId < 0)
+      return Result.Fail("Invalid doctor");
 
-    check = schedule.IsValid();
+    var check = schedule.IsValid();
     if (check.IsFailure)
       return Result.Fail("Invalid schedule: " + check.Error);
 
-    return _db.UpdateSchedule(doctor, schedule)
+    return _db.Update(schedule)
       ? Result.Ok()
       : Result.Fail("Cant update schedule");
   }

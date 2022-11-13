@@ -12,13 +12,13 @@ public class UserService
     _db = db;
   }
 
-  public Result<User> GetUserByUsername(string username)
+  public Result<User?> GetUserByUsername(string username)
   {
     if (string.IsNullOrEmpty(username))
       return Result.Fail<User>("Invalid username");
 
     return _db.IsUserExists(username)
-      ? Result.Ok(_db.GetUserByUsername(username))
+      ? Result.Ok(_db.GetItem(username))
       : Result.Fail<User>("Cant find user");
   }
 
@@ -42,7 +42,7 @@ public class UserService
     if (_db.IsUserExists(user.Username))
       return Result.Fail<User>("Username is already taken");
 
-    return _db.CreateUser(user)
+    return _db.Create(user)
       ? Result.Ok(user)
       : Result.Fail<User>("Cant create user");
   }

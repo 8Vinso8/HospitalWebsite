@@ -4,8 +4,7 @@ using Models;
 
 public interface IAppointmentRepository : IRepository<Appointment>
 {
-  bool CreateAppointment(Appointment appointment);
   IEnumerable<Appointment> GetAppointments(int doctorId);
-  IEnumerable<IEnumerable<DateTime>> GetFreeAppointments(int doctorId);
-  IEnumerable<IEnumerable<DateTime>> GetFreeAppointments(Specialization specialization);
+  IEnumerable<Appointment> GetFreeAppointments(int doctorId, DateOnly date);
+  IEnumerable<Appointment> GetFreeAppointments(Specialization specialization, DateOnly date);
 }
