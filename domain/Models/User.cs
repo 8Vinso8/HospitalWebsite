@@ -11,19 +11,15 @@ namespace domain.Models
     public string Username;
     public string Password;
 
-    public User()
+    public User(int id, string phoneNumber, string fullName, Role role,
+      string username, string password)
     {
-    }
-
-    public User(int _Id, string _PhoneNumber, string _FullName, Role _Role,
-      string _Username, string _Password)
-    {
-      Id = _Id;
-      PhoneNumber = _PhoneNumber;
-      FullName = _FullName;
-      Role = _Role;
-      Username = _Username;
-      Password = _Password;
+      Id = id;
+      PhoneNumber = phoneNumber;
+      FullName = fullName;
+      Role = role;
+      Username = username;
+      Password = password;
     }
 
     public Result IsValid()

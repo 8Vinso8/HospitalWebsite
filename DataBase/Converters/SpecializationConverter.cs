@@ -16,10 +16,6 @@ public static class SpecializationConverter
 
   public static Specialization ToDomain(this SpecializationModel model)
   {
-    return new Specialization
-    {
-      Id = model.Id,
-      Name = model.Name
-    };
+    return new Specialization(model.Id, model.Name);
   }
 }

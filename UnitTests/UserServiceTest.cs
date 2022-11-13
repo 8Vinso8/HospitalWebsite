@@ -13,7 +13,8 @@ namespace UnitTests
       _userService = new UserService(_userRepositoryMock.Object);
     }
 
-    [Fact] public void UsernameIsEmptyOrNull_ShouldFail()
+    [Fact]
+    public void UsernameIsEmptyOrNull_ShouldFail()
     {
       var res = _userService.GetUserByUsername(string.Empty);
 
@@ -21,7 +22,8 @@ namespace UnitTests
       Assert.Equal("Invalid username", res.Error);
     }
 
-    [Fact] public void UserNotFound_ShouldFail()
+    [Fact]
+    public void UserNotFound_ShouldFail()
     {
       _userRepositoryMock.Setup(repository => repository
         .GetItem(It.IsAny<string>())).Returns(() => null);
@@ -32,7 +34,8 @@ namespace UnitTests
       Assert.Equal("Cant find user", res.Error);
     }
 
-    [Fact] public void IsUserExists_ShouldFail()
+    [Fact]
+    public void IsUserExists_ShouldFail()
     {
       var res = _userService.IsUserExists(string.Empty);
 
@@ -40,7 +43,8 @@ namespace UnitTests
       Assert.Equal("Invalid username", res.Error);
     }
 
-    [Fact] public void IsUserExists_NotFound_ShouldFail()
+    [Fact]
+    public void IsUserExists_NotFound_ShouldFail()
     {
       _userRepositoryMock.Setup(repository => repository
         .IsUserExists(It.IsAny<string>())).Returns(() => false);
@@ -51,15 +55,18 @@ namespace UnitTests
       Assert.Equal("Cant find user", res.Error);
     }
 
-    [Fact] public void Register_Empty_ShouldFail()
+    [Fact]
+    public void Register_Empty_ShouldFail()
     {
-      var res = _userService.Register(new User());
+      var res = _userService.Register(new User(0, "0", "0", Role.Patient, "", "0"));
+
 
       Assert.True(res.IsFailure);
       Assert.Contains("Invalid username", res.Error);
     }
 
-    [Fact] public void Register_AlreadyExists_ShouldFail()
+    [Fact]
+    public void Register_AlreadyExists_ShouldFail()
     {
       _userRepositoryMock.Setup(repository => repository
         .IsUserExists(It.IsAny<string>())).Returns(() => true);
@@ -70,7 +77,8 @@ namespace UnitTests
       Assert.Equal("Username is already taken", res.Error);
     }
 
-    [Fact] public void Register_Error_ShouldFail()
+    [Fact]
+    public void Register_Error_ShouldFail()
     {
       _userRepositoryMock.Setup(repository => repository
         .IsUserExists(It.IsAny<string>())).Returns(() => false);

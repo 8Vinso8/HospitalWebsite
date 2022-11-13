@@ -18,12 +18,6 @@ public static class ScheduleConverter
 
   public static Schedule ToDomain(this ScheduleModel model)
   {
-    return new Schedule
-    {
-      Id = model.Id,
-      StartTime = model.StartTime,
-      EndTime = model.EndTime,
-      DoctorId = model.DoctorId
-    };
+    return new Schedule(model.Id, model.DoctorId, model.StartTime, model.EndTime);
   }
 }

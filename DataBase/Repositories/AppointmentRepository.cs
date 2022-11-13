@@ -83,7 +83,7 @@ public class AppointmentRepository : IAppointmentRepository
     var doctors = _context.Doctors.Where(u => u.Specialization != null && u.Specialization.Id == specialization.Id)
       .ToList();
     foreach (var appointment in doctors.Select(doctor =>
-               _context.Appointments.Where(u => u.DoctorId == doctor.Id && u.PatientId == 0).ToList()))
+               _context.Appointments.Where(u => u.DoctorId == doctor.Id && u.PatientId == -1).ToList()))
     {
       appointment.ForEach(p => allAppointments.Add(p));
     }

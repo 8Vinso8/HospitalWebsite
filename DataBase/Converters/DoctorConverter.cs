@@ -17,11 +17,6 @@ public static class DoctorConverter
 
   public static Doctor ToDomain(this DoctorModel model)
   {
-    return new Doctor
-    {
-      Id = model.Id,
-      FullName = model.FullName,
-      Specialization = model.Specialization.ToDomain()
-    };
+    return new Doctor(model.Id, model.FullName, model.Specialization.ToDomain());
   }
 }

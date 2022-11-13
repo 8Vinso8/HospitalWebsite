@@ -10,10 +10,6 @@ public class Appointment
   public DateTime EndTime;
   public int Id;
 
-  public Appointment()
-  {
-  }
-
   public Appointment(int id, int doctorId, int patientId, DateTime startTime, DateTime endTime)
   {
     Id = id;

@@ -7,10 +7,6 @@ public class Specialization
   public int Id;
   public string Name;
 
-  public Specialization()
-  {
-  }
-
   public Specialization(int id, string name)
   {
     Id = id;

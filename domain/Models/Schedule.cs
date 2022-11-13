@@ -9,10 +9,6 @@ public class Schedule
   public DateTime StartTime;
   public DateTime EndTime;
 
-  public Schedule()
-  {
-  }
-
   public Schedule(int id, int doctorId, DateTime startTime, DateTime endTime)
   {
     DoctorId = doctorId;
