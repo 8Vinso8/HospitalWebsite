@@ -2,6 +2,7 @@
 using DataBase.Models;
 using domain.Logic;
 using domain.Models;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace DataBase.Repositories;
 
@@ -72,22 +73,33 @@ public class AppointmentRepository : IAppointmentRepository
     return _context.Appointments.Where(a => a.DoctorId == doctorId).Select(a => a.ToDomain());
   }
 
-  public IEnumerable<Appointment> GetFreeAppointments(int doctorId)
+  public IEnumerable<Appointment> GetFreeAppointments(int doctorId, DateOnly date)
   {
-    return _context.Appointments.Where(a => a.DoctorId == doctorId && a.PatientId == -1).Select(a => a.ToDomain());
-  }
-
-  public IEnumerable<Appointment> GetFreeAppointments(Specialization specialization)
-  {
-    var allAppointments = new List<AppointmentModel>();
-    var doctors = _context.Doctors.Where(u => u.Specialization != null && u.Specialization.Id == specialization.Id)
-      .ToList();
-    foreach (var appointment in doctors.Select(doctor =>
-               _context.Appointments.Where(u => u.DoctorId == doctor.Id && u.PatientId == -1).ToList()))
+    var allApps =
+      _context.Appointments.Where(a => a.DoctorId == doctorId && DateOnly.FromDateTime(a.StartTime.Date) == date);
+    var sch = _context.Schedules.FirstOrDefault(sch => sch.DoctorId == doctorId);
+    IQueryable<AppointmentModel> freeApps = Enumerable.Empty<AppointmentModel>().AsQueryable();
+    TimeOnly cur = TimeOnly.FromDateTime(sch.StartTime);
+    while (cur < TimeOnly.FromDateTime(sch.EndTime))
     {
-      appointment.ForEach(p => allAppointments.Add(p));
+      if (!allApps.Any(a => a.StartTime == date.ToDateTime(cur)))
+        freeApps.Append(new AppointmentModel()
+          { DoctorId = doctorId, StartTime = date.ToDateTime(cur), EndTime = date.ToDateTime(cur.AddMinutes(30)) });
+      cur = cur.AddMinutes(30);
     }
 
-    return allAppointments.Select(x => x.ToDomain());
+    var result = freeApps.Select(a => a.ToDomain());
+    return result.ToList();
+  }
+
+  public IEnumerable<Appointment> GetFreeAppointments(Specialization specialization, DateOnly date)
+  {
+    var doctors = _context.Doctors.Where(d => d.Specialization.Id == specialization.Id);
+    IQueryable<Appointment> freeApps = Enumerable.Empty<Appointment>().AsQueryable();
+    foreach (var doctor in doctors)
+    {
+      GetFreeAppointments(doctor.Id, date).ToList().ForEach(a => freeApps.Append(a));
+    }
+    return freeApps;
   }
 }

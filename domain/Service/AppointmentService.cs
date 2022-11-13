@@ -41,18 +41,18 @@ public class AppointmentService
     return Result.Ok(_db.GetAppointments(doctorId));
   }
 
-  public Result<IEnumerable<Appointment>> GetFreeAppointments(Specialization specialization)
+  public Result<IEnumerable<Appointment>> GetFreeAppointments(Specialization specialization, DateOnly date)
   {
     var result = specialization.IsValid();
     if (result.IsFailure)
       return Result.Fail<IEnumerable<Appointment>>("Invalid specialization: " + result.Error);
-    return Result.Ok(_db.GetFreeAppointments(specialization));
+    return Result.Ok(_db.GetFreeAppointments(specialization, date));
   }
 
-  public Result<IEnumerable<Appointment>> GetFreeAppointments(int doctorId)
+  public Result<IEnumerable<Appointment>> GetFreeAppointments(int doctorId, DateOnly date)
   {
     if (doctorId < 0)
       return Result.Fail<IEnumerable<Appointment>>("Invalid id");
-    return Result.Ok(_db.GetFreeAppointments(doctorId));
+    return Result.Ok(_db.GetFreeAppointments(doctorId, date));
   }
 }

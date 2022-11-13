@@ -97,7 +97,7 @@ public class AppointmentServiceTests
   public void GetFreeAppointments_Invalid_Specialization_Returns_Error()
   {
     var specialization = new Specialization(0, "");
-    var check = _appointmentService.GetFreeAppointments(specialization);
+    var check = _appointmentService.GetFreeAppointments(specialization, DateOnly.MaxValue);
 
     Assert.True(check.IsFailure);
     Assert.Contains("Invalid specialization: ", check.Error);
@@ -110,11 +110,12 @@ public class AppointmentServiceTests
     {
     };
     IEnumerable<Appointment> a = appointments;
-    _appointmentRepositoryMock.Setup(repository => repository.GetFreeAppointments(It.IsAny<Specialization>()))
+    _appointmentRepositoryMock.Setup(repository =>
+        repository.GetFreeAppointments(It.IsAny<Specialization>(), It.IsAny<DateOnly>()))
       .Returns(() => a);
 
     var specialization = new Specialization(0, "a");
-    var check = _appointmentService.GetFreeAppointments(specialization);
+    var check = _appointmentService.GetFreeAppointments(specialization, DateOnly.MaxValue);
 
     Assert.True(check.Success);
   }
@@ -151,9 +152,10 @@ public class AppointmentServiceTests
     {
     };
     IEnumerable<Appointment> a = appointments;
-    _appointmentRepositoryMock.Setup(repository => repository.GetFreeAppointments(It.IsAny<int>()))
+    _appointmentRepositoryMock
+      .Setup(repository => repository.GetFreeAppointments(It.IsAny<int>(), It.IsAny<DateOnly>()))
       .Returns(() => a);
-    var check = _appointmentService.GetFreeAppointments(0);
+    var check = _appointmentService.GetFreeAppointments(0, DateOnly.MaxValue);
 
     Assert.True(check.Success);
   }
@@ -161,7 +163,7 @@ public class AppointmentServiceTests
   [Fact]
   public void GetFreeAppointments_Id_Invalid_Failure()
   {
-    var check = _appointmentService.GetFreeAppointments(-1);
+    var check = _appointmentService.GetFreeAppointments(-1, DateOnly.MaxValue);
 
     Assert.True(check.IsFailure);
   }
