@@ -7,12 +7,13 @@ public class DoctorServiceTests
 {
   private readonly DoctorService _doctorService;
   private readonly Mock<IDoctorRepository> _doctorRepositoryMock;
-  private readonly Mock<IAppointmentRepository> _appReppMock;
+  private readonly Mock<IAppointmentRepository> _appRepositoryMock;
 
   public DoctorServiceTests()
   {
     _doctorRepositoryMock = new Mock<IDoctorRepository>();
-    _doctorService = new DoctorService(_doctorRepositoryMock.Object, _appReppMock.Object);
+    _appRepositoryMock = new Mock<IAppointmentRepository>();
+    _doctorService = new DoctorService(_doctorRepositoryMock.Object, _appRepositoryMock.Object);
   }
 
   [Fact]
@@ -33,7 +34,7 @@ public class DoctorServiceTests
     var check = _doctorService.AddDoctor(doctor);
 
     Assert.True(check.IsFailure);
-    Assert.Equal("Cant add doctor", check.Error);
+    Assert.Equal("Cant create doctor", check.Error);
   }
 
   [Fact]
@@ -62,12 +63,11 @@ public class DoctorServiceTests
   [Fact]
   public void Remove_Doctor_With_Appointments_Returns_Error()
   {
-    var _appointmentRepositoryMock = new Mock<IAppointmentRepository>();
     List<Appointment> apps = new()
     {
       new Appointment(0, 0, 0, DateTime.MinValue, DateTime.MaxValue)
     };
-    _appointmentRepositoryMock.Setup(x => x.GetAppointments(It.IsAny<int>())).Returns(apps);
+    _appRepositoryMock.Setup(r => r.GetAppointments(It.IsAny<int>())).Returns(() => apps);
 
     var result = _doctorService.RemoveDoctor(0);
 

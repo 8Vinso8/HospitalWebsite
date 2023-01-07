@@ -50,7 +50,7 @@ public class UserService
       return Result.Fail<User>("Username is already taken");
 
     if (!_db.Create(user))
-      return Result.Fail<User>("Unable to create user");
+      return Result.Fail<User>("Cant create user");
     
     _db.Save();
     return Result.Ok(user);
