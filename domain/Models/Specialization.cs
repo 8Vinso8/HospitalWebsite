@@ -4,8 +4,8 @@ using Logic;
 
 public class Specialization
 {
-  public int Id;
-  public string Name;
+  public int Id { get; set; }
+  public string Name { get; set; }
 
   public Specialization(int id, string name)
   {
