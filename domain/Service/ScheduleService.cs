@@ -21,6 +21,11 @@ public class ScheduleService
     return Result.Ok(_db.GetSchedule(doctor));
   }
 
+  public Result<Schedule> GetSchedule(int id)
+  {
+    return Result.Ok(_db.GetItem(id));
+  }
+
   public Result CreateSchedule(Schedule schedule)
   {
     if (schedule.DoctorId < 0)
@@ -30,7 +35,10 @@ public class ScheduleService
     if (result1.IsFailure)
       return Result.Fail("Invalid schedule: " + result1.Error);
 
-    return _db.Create(schedule) ? Result.Ok() : Result.Fail<Schedule>("Cant create schedule");
+    if (!_db.Create(schedule))
+      return Result.Fail<Schedule>("Cant create schedule");
+    _db.Save();
+    return Result.Ok();
   }
 
   public Result UpdateSchedule(Schedule schedule)
@@ -42,8 +50,9 @@ public class ScheduleService
     if (check.IsFailure)
       return Result.Fail("Invalid schedule: " + check.Error);
 
-    return _db.Update(schedule)
-      ? Result.Ok()
-      : Result.Fail("Cant update schedule");
+    if (!_db.Update(schedule))
+      return Result.Fail("Cant update schedule");
+    _db.Save();
+    return Result.Ok();
   }
 }

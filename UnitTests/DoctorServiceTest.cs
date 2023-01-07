@@ -7,11 +7,12 @@ public class DoctorServiceTests
 {
   private readonly DoctorService _doctorService;
   private readonly Mock<IDoctorRepository> _doctorRepositoryMock;
+  private readonly Mock<IAppointmentRepository> _appReppMock;
 
   public DoctorServiceTests()
   {
     _doctorRepositoryMock = new Mock<IDoctorRepository>();
-    _doctorService = new DoctorService(_doctorRepositoryMock.Object);
+    _doctorService = new DoctorService(_doctorRepositoryMock.Object, _appReppMock.Object);
   }
 
   [Fact]
@@ -52,7 +53,7 @@ public class DoctorServiceTests
     List<Appointment> apps = new();
     _appointmentRepositoryMock.Setup(x => x.GetAppointments(It.IsAny<int>())).Returns(apps);
 
-    var check = _doctorService.RemoveDoctor(0, _appointmentRepositoryMock.Object);
+    var check = _doctorService.RemoveDoctor(0);
 
     Assert.True(check.IsFailure);
     Assert.Equal("Cant get doctor", check.Error);
@@ -68,7 +69,7 @@ public class DoctorServiceTests
     };
     _appointmentRepositoryMock.Setup(x => x.GetAppointments(It.IsAny<int>())).Returns(apps);
 
-    var result = _doctorService.RemoveDoctor(0, _appointmentRepositoryMock.Object);
+    var result = _doctorService.RemoveDoctor(0);
 
     Assert.True(result.IsFailure);
     Assert.Equal("Doctor has appointments", result.Error);
@@ -84,7 +85,7 @@ public class DoctorServiceTests
       .Returns(() => new Doctor(0, "a", new Specialization(0, "a")));
     _doctorRepositoryMock.Setup(repository => repository.Delete(It.IsAny<int>())).Returns(() => false);
 
-    var result = _doctorService.RemoveDoctor(0, _appointmentRepositoryMock.Object);
+    var result = _doctorService.RemoveDoctor(0);
 
     Assert.True(result.IsFailure);
     Assert.Equal("Cant remove doctor", result.Error);
@@ -100,7 +101,7 @@ public class DoctorServiceTests
       .Returns(() => new Doctor(0, "0", new Specialization(0, "0")));
     _doctorRepositoryMock.Setup(repository => repository.Delete(It.IsAny<int>())).Returns(() => true);
 
-    var result = _doctorService.RemoveDoctor(0, _appointmentRepositoryMock.Object);
+    var result = _doctorService.RemoveDoctor(0);
 
     Assert.True(result.Success);
   }
