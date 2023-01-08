@@ -4,9 +4,9 @@ using Logic;
 
 public class Doctor
 {
-  public int Id;
-  public string FullName;
-  public Specialization Specialization;
+  public int Id { get; set; }
+  public string FullName { get; set; }
+  public Specialization Specialization { get; set; }
 
   public Doctor(int id, string fullname, Specialization specialization)
   {

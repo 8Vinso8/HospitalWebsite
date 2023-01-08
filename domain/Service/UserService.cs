@@ -22,6 +22,13 @@ public class UserService
       : Result.Fail<User>("Cant find user");
   }
 
+  public Result<User?> GetUserById(int id)
+  {
+    return _db.IsUserExists(id)
+      ? Result.Ok(_db.GetItem(id))
+      : Result.Fail<User>("Cant find user");
+  }
+
 
   public Result IsUserExists(string username)
   {
@@ -42,8 +49,15 @@ public class UserService
     if (_db.IsUserExists(user.Username))
       return Result.Fail<User>("Username is already taken");
 
-    return _db.Create(user)
-      ? Result.Ok(user)
-      : Result.Fail<User>("Cant create user");
+    if (!_db.Create(user))
+      return Result.Fail<User>("Cant create user");
+    
+    _db.Save();
+    return Result.Ok(user);
+  }
+
+  public Result<IEnumerable<User>> GetAllUsers()
+  {
+    return Result.Ok(_db.GetAll());
   }
 }

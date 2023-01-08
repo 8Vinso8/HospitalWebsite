@@ -4,12 +4,12 @@ namespace domain.Models
 {
   public class User
   {
-    public int Id;
-    public string PhoneNumber;
-    public string FullName;
-    public Role Role;
-    public string Username;
-    public string Password;
+    public int Id { get; set; }
+    public string PhoneNumber { get; set; }
+    public string FullName { get; set; }
+    public Role Role { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
 
     public User(int id, string phoneNumber, string fullName, Role role,
       string username, string password)

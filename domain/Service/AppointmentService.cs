@@ -29,16 +29,17 @@ public class AppointmentService
     if (appointments.Any(a => appointment.StartTime < a.EndTime && a.StartTime < appointment.EndTime))
       return Result.Fail<Appointment>("Time is occupied");
 
-    return _db.Create(appointment)
-      ? Result.Ok(appointment)
-      : Result.Fail<Appointment>("Cant create appointment");
+    if (!_db.Create(appointment))
+      return Result.Fail<Appointment>("Cant create appointment");
+    _db.Save();
+    return Result.Ok(appointment);
   }
 
   public Result<IEnumerable<Appointment>> GetAppointments(int doctorId)
   {
-    if (doctorId < 0)
-      return Result.Fail<IEnumerable<Appointment>>("Invalid id");
-    return Result.Ok(_db.GetAppointments(doctorId));
+    return doctorId < 0
+      ? Result.Fail<IEnumerable<Appointment>>("Invalid id")
+      : Result.Ok(_db.GetAppointments(doctorId));
   }
 
   public Result<IEnumerable<Appointment>> GetFreeAppointments(Specialization specialization, DateOnly date)

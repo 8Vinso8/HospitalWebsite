@@ -2,7 +2,6 @@
 using DataBase.Models;
 using domain.Logic;
 using domain.Models;
-using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace DataBase.Repositories;
 

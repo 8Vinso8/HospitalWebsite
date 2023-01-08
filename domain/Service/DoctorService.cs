@@ -6,10 +6,12 @@ using Models;
 public class DoctorService
 {
   private readonly IDoctorRepository _db;
+  private readonly IAppointmentRepository _apps;
 
-  public DoctorService(IDoctorRepository db)
+  public DoctorService(IDoctorRepository db, IAppointmentRepository apps)
   {
     _db = db;
+    _apps = apps;
   }
 
   public Result<Doctor> AddDoctor(Doctor doctor)
@@ -17,12 +19,15 @@ public class DoctorService
     var check = doctor.IsValid();
     if (check.IsFailure)
       return Result.Fail<Doctor>("Invalid doctor: " + check.Error);
-    return _db.Create(doctor) ? Result.Ok(doctor) : Result.Fail<Doctor>("Cant add doctor");
+    if (!_db.Create(doctor))
+      return Result.Fail<Doctor>("Cant create doctor");
+    _db.Save();
+    return Result.Ok(doctor);
   }
 
-  public Result<Doctor> RemoveDoctor(int id, IAppointmentRepository repository)
+  public Result<Doctor> RemoveDoctor(int id)
   {
-    var apps = repository.GetAppointments(id);
+    var apps = _apps.GetAppointments(id);
     if (apps.Any())
       return Result.Fail<Doctor>("Doctor has appointments");
     var check = GetDoctor(id);
@@ -35,6 +40,7 @@ public class DoctorService
   {
     return Result.Ok(_db.GetAll());
   }
+
   public Result<Doctor> GetDoctor(int id)
   {
     if (id < 0)

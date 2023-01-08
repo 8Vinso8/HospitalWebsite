@@ -68,6 +68,11 @@ public class UserRepository : IUserRepository
     return _context.Users.Any(user => user.Username == username);
   }
 
+  public bool IsUserExists(int id)
+  {
+    return _context.Users.Any(user => user.Id == id);
+  }
+
   public User? GetItem(string username)
   {
     return _context.Users.FirstOrDefault(user => user.Username == username)?.ToDomain();

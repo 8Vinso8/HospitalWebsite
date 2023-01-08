@@ -4,11 +4,11 @@ using Logic;
 
 public class Appointment
 {
-  public int DoctorId;
-  public int PatientId;
-  public DateTime StartTime;
-  public DateTime EndTime;
-  public int Id;
+  public int DoctorId { get; set; }
+  public int PatientId { get; set; }
+  public DateTime StartTime { get; set; }
+  public DateTime EndTime { get; set; }
+  public int Id { get; set; }
 
   public Appointment(int id, int doctorId, int patientId, DateTime startTime, DateTime endTime)
   {
