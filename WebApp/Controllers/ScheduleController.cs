@@ -1,5 +1,6 @@
 ﻿using domain.Models;
 using domain.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers;
@@ -28,6 +29,7 @@ public class ScheduleController : Controller
     return res.IsFailure ? Problem(statusCode: 404, detail: res.Error) : Ok(res.Value);
   }
 
+  [Authorize]
   [HttpPost("register")]
   public IActionResult AddSchedule(int doctorId, DateTime startTime, DateTime endTime)
   {
@@ -38,7 +40,8 @@ public class ScheduleController : Controller
     return Ok();
   }
 
-  [HttpGet("update")]
+  [Authorize]
+  [HttpPost("update")]
   public IActionResult UpdateSchedule(int scheduleId, int? doctorId, DateTime? startTime, DateTime? endTime)
   {
     var check = _service.GetSchedule(scheduleId);

@@ -1,6 +1,6 @@
-﻿using domain.Logic;
-using domain.Models;
+﻿using domain.Models;
 using domain.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers;
@@ -18,6 +18,7 @@ public class AppointmentController : ControllerBase
     _serviceSchedule = scheduleService;
   }
 
+  [Authorize]
   [HttpPost("add")]
   public IActionResult SaveAppointment(int patientId, int doctorId, DateTime startTime, DateTime endTime,
     int scheduleId)
