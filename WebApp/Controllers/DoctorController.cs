@@ -1,6 +1,6 @@
-﻿using domain.Logic;
-using domain.Models;
+﻿using domain.Models;
 using domain.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers;
@@ -16,6 +16,7 @@ public class DoctorController : Controller
     _service = service;
   }
 
+  [Authorize]
   [HttpPost("add")]
   public IActionResult CreateDoctor(string fullName, Specialization specialization)
   {
@@ -25,6 +26,7 @@ public class DoctorController : Controller
     return res.IsFailure ? Problem(statusCode: 404, detail: res.Error) : Ok(res.Value);
   }
 
+  [Authorize]
   [HttpDelete("delete")]
   public IActionResult DeleteDoctor(int id)
   {

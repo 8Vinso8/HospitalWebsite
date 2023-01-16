@@ -1,6 +1,7 @@
 ﻿using domain.Logic;
 using domain.Models;
 using domain.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers;
@@ -37,6 +38,7 @@ public class SpecializationController : Controller
     return answer.IsFailure ? Problem(statusCode: 404, detail: answer.Error) : Ok(answer.Value);
   }
 
+  [Authorize]
   [HttpPost("add")]
   public ActionResult Add(string name)
   {
@@ -50,6 +52,7 @@ public class SpecializationController : Controller
     return Ok(_service.GetSpecialization(name).Value);
   }
 
+  [Authorize]
   [HttpDelete("delete/{id:int}")]
   public ActionResult Delete(int id)
   {
@@ -60,6 +63,7 @@ public class SpecializationController : Controller
     return Ok(res.Value);
   }
 
+  [Authorize]
   [HttpDelete("delete/{name}")]
   public ActionResult Delete(string name)
   {
